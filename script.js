@@ -71,7 +71,7 @@ let object = null;
 // === Funkce hlavní scéna ===
 function loadModel(modelName) {
     if (object) { disposeObject(object, scene); object=null; }
-    loader.load(`./models02/${modelName}.glb`, gltf=>{
+    loader.load(`./${modelName}.glb`, gltf=>{
         object = gltf.scene;
         object.scale.set(0.12,0.12,0.12);
         object.position.set(0,0,0);
@@ -174,7 +174,7 @@ function animateTest(){
 
 function loadTestModel(modelName){
     if(testObject) { disposeObject(testObject, testScene); testObject=null; }
-    loader.load(`./models02/${modelName}.glb`, gltf=>{
+    loader.load(`./${modelName}.glb`, gltf=>{
         testObject=gltf.scene;
         testObject.scale.set(0.12,0.12,0.12);
         testObject.position.set(0,0,0);
@@ -367,3 +367,4 @@ verifySubmit.addEventListener('click', () => {
     verifyResult.after(homeBtn);
   }
 });
+
