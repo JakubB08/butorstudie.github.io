@@ -1,31 +1,231 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="utf-8">
-  <title>3D modely</title>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.155.0/examples/js/loaders/GLTFLoader.js"></script>
-  <style>body{margin:0;} canvas{display:block;}</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lebka – 3D poznávačka</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+  <!-- Horní banner -->
+  <header id="top-banner">
+    <h1>Poznávačka lebka
+      <button id="show-skull-btn" data-model="scene" data-name="Celá lebka"
+  data-text="Lebka je kostěná schránka mozku a opora obličejové části.
+  Skládá se z mozkové části a obličejové části.
+||V lebce se kosti tvoří z vaziva nebo i z chrupavky, která se postupně osifikací mění na kostní tkáň.
+Po osifikaci zůstávají patrné švy a u novorozenců fontanely (lupínky).
+||Stáří lebky lze odhadnout podle postupného zániku švů na vrcholu lebky:
+||💀 korunový šev spojuje čelní a temenní kosti – kolem 50 let šev téměř zmizí
+||💀 šípový šev (sutura sagittalis) spojuje dvě temenní kosti – zaniká cca kolem 40 let
+||💀 lambdový šev (sutura lambdoidea) spojuje temenní a týlní kost – zaniká cca kolem 60 let.
+||Pohlaví lebky se určuje podle morfologie:
+||💀 muži mají výraznější zevní hrbol týlní, vyklenutou čelní kost nad nosem a větší bradavkový výběžek
+||💀 u žen jsou tyto znaky obvykle jemnější, s užší čelistí a menšími výběžky.
+||Lebka obsahuje 6 hlavních dutin: nosní, vedlejší dutiny nosní, očnice, mozkovna (dutina lební), ústní, středoušní.">
+  Celá lebka
+</button>
 
-    const loader = new THREE.GLTFLoader();
-    loader.load('model1.glb', function(gltf){
-      scene.add(gltf.scene);
-    });
+    </h1>
+    <button id="test-mode-btn" class="btn-white">TEST</button>
+    <nav id="bones-nav">
+      <ul>
+        <ul>
+  <li data-model="front04" data-name="Čelní kost" data-text="Počet: 1||Část: mozková||||
+Umístění a tvar: Tvoří přední část lebky a horní okraj očnic. Má vypouklý tvar, přecházející směrem dozadu ke temenním kostem.
+||Struktura a tvrdost: Silná a kompaktní, s dobře vyvinutou kortikální vrstvou. Uprostřed obsahuje čelní dutiny, které snižují hmotnost lebky.
+||Výběžky a části: Obsahuje nadočnicové oblouky, které chrání oko, a očnicové ploténky tvořící strop očnice. Nadčelní výběžky vystupují nad očnicí, spánkové linie směřují k temenním kostem.
+||Funkce a spojení: Spojuje se s temenní, nosní a klínovou kostí. Slouží jako úpon čelního svalu a pomáhá chránit mozek a oči.
+||Dutiny: Podílí se na tvorbě mozkovny (přední část lební dutiny) a očnice (její strop). Obsahuje čelní dutiny, které patří k vedlejším dutinám nosním a navazují na nosní dutinu. Čelní kost tak propojuje nosní dutinu s vedlejšími dutinami a zároveň odlehčuje přední část lebky.">
+    Čelní kost
+  </li>
 
-    camera.position.z = 5;
-    function animate(){
-      requestAnimationFrame(animate);
-      renderer.render(scene,camera);
-    }
-    animate();
-  </script>
+  <li data-model="cich" data-name="Čichová kost" data-text="Počet: 1||Část: mozková||
+||Umístění a tvar: Nachází se mezi očnicemi a tvoří část nosní přepážky. Má tenkou, křehkou strukturu.
+||Struktura a tvrdost: Tenká kost z houbovité tkáně, snadno poranitelná při úrazu nosu.
+||Výběžky a části: Lamina cribrosa (děrovaná ploténka) umožňuje průchod čichových nervů. Lamina perpendicularis tvoří horní část nosní přepážky, z ní vybíhá čichový výběžek. Na bocích se nachází horní a střední skořepa nosní.
+||Funkce a spojení: Zajišťuje přenos čichových podnětů z nosní dutiny do mozku a podílí se na stavbě nosní přepážky.
+||Dutiny: Tvoří horní část nosní dutiny a podílí se na stavbě očnice (vnitřní stěna). Obsahuje čichové dutiny, které patří k vedlejším dutinám nosním. Leží na přechodu mezi nosní dutinou a mozkovnou, skrz lamina cribrosa procházejí čichové nervy.">
+    Čichová kost
+  </li>
+
+  <li data-model="dolnicel02" data-name="Dolní čelist" data-text="Počet: 1||Část: obličejová||
+||Umístění a tvar: Tvoří dolní hranici obličeje, je pohyblivou částí lebky.
+||Struktura a tvrdost: Velmi pevná, hustá kost s vyvinutou kortikální vrstvou. Má tělo a dvě ramena (ramus mandibulae).
+||Výběžky a části: Kloubní výběžek (processus condylaris) tvoří čelistní kloub se spánkovou kostí, bradový výběžek vytváří bradu, dásňový výběžek obsahuje zubní lůžka.
+||Funkce a spojení: Umožňuje pohyb dolní čelisti při žvýkání a mluvení. Spojuje se se spánkovou kostí v čelistním kloubu.
+||Dutiny: Neobsahuje pravé vzdušné dutiny, ale je součástí ústní dutiny, jejíž spodní hranici tvoří. Uvnitř dolní čelisti vede mandibulární kanálek s cévami a nervy pro dolní zuby.">
+    Dolní čelist
+  </li>
+
+  <li data-model="hornicel" data-name="Horní čelist" data-text="Počet: 2||Část: obličejová||
+||Umístění a tvar: Leží nad dolní čelistí a tvoří střed obličeje. Spojuje horní zuby, nos a očnice.
+||Struktura a tvrdost: Poměrně silná, obsahuje dutiny vyplněné vzduchem (sinus maxillares).
+||Výběžky a části: Patrový výběžek tvoří přední část tvrdého patra, čelní výběžek se spojuje s čelní kostí, jařmový výběžek s lícní kostí.
+||Funkce a spojení: Upevňuje horní zuby, podílí se na tvorbě nosní a ústní dutiny. Slouží jako opora tváří.
+||Dutiny: Patří k ústní dutině (tvoří její strop) a zároveň se podílí na tvorbě nosní dutiny (její boční stěna). Obsahuje čelistní dutiny – součást vedlejších dutin nosních, které snižují hmotnost lebky a pomáhají rezonanci hlasu. Spolu s čichovou a čelní kostí se podílí také na tvorbě očnice.">
+    Horní čelist
+  </li>
+
+  <li data-model="klin03" data-name="Klínová kost" data-text="Počet: 1||Část: mozková||
+||Umístění a tvar: Leží uprostřed lebky mezi čelní a týlní kostí, tvar připomíná motýla.
+||Struktura a tvrdost: Kompaktní kost s dutinami uvnitř těla (sinus sphenoidales).
+||Výběžky a části: Má velká a malá křídla, křídlovité výběžky a tělo kosti. Na horní straně těla je turecké sedlo (sella turcica), v němž leží hypofýza.
+||Funkce a spojení: Spojuje většinu kostí lebky, stabilizuje lebku a chrání mozkové struktury.
+||Dutiny: Nachází se v zadní části mozkovny (tvoří část lební baze). Obsahuje klínové dutiny – vedlejší dutiny nosní uložené pod tureckým sedlem, které navazují na nosní dutinu. Částečně se podílí i na stavbě očnice (její zadní část).">
+    Klínová kost
+  </li>
+
+  <li data-model="lice" data-name="Lícní kost" data-text="Počet: 2||Část: obličejová||
+||Umístění a tvar: Tvoří vyvýšené části lící a boční okraje očnic.
+||Struktura a tvrdost: Poměrně silná a kompaktní, odolná proti tlaku.
+||Výběžky a části: Spánkový výběžek se spojuje se spánkovou kostí, očnicový výběžek tvoří část dolního okraje očnice.
+||Funkce a spojení: Zpevňuje tvář, tvoří část jařmového oblouku a úpon žvýkacích svalů.
+||Zvláštnosti: Přenáší žvýkací síly mezi horní čelistí a lebkou.
+||Dutiny: Tvoří boční stěnu očnice a pomáhá uzavírat ústní dutinu z boku.">
+    Lícní kost
+  </li>
+
+  <li data-model="jazyl03" data-name="Jazylka" data-text="Počet: 1||Část: obličejová||
+||Umístění a tvar: Zavěšena pod dolní čelistí v oblasti krku.
+||Struktura a tvrdost: Malá, podkovovitá kost z kompaktní tkáně.
+||Výběžky a části: Tělo jazylky a rohy (malé a velké) slouží jako úpony pro svaly a vazy.
+||Funkce a spojení: Zavěšena na vazech vycházejících z bodcovitého výběžku spánkové kosti. Podpírá jazyk a hrtan, podílí se na polykání a tvorbě hlasu.
+||Zvláštnosti: Nemá přímé kostní spojení s ostatními kostmi.">
+    Jazylka
+  </li>
+
+  <li data-model="patro" data-name="Patrová kost" data-text="Počet: 2||Část: obličejová||
+||Umístění a tvar: Nachází se v zadní části ústní dutiny, za horní čelistí.
+||Struktura a tvrdost: Tenká, ale pevná kost s horizontální a vertikální ploténkou.
+||Výběžky a části: Horizontální výběžek tvoří tvrdé patro, vertikální výběžek se spojuje s klínovou a nosní kostí.
+||Funkce a spojení: Odděluje nosní a ústní dutinu a vytváří základ pro měkké patro.
+||Zvláštnosti: Je důležitá pro správné dýchání a artikulaci.
+||Dutiny: Tvoří spodní stěnu nosní dutiny a zároveň strop ústní dutiny. Spolu s horní čelistí uzavírá přední část vedlejších dutin nosních. Patrová kost je důležitá pro oddělení dýchací a trávicí cesty.">
+    Patrová kost
+  </li>
+
+  <li data-model="tyl" data-name="Týlní kost" data-text="Počet: 1||Část: mozková||
+||Umístění a tvar: Tvoří zadní a dolní část lebky.
+||Struktura a tvrdost: Silná a odolná, chrání mozeček a mozkový kmen.
+||Výběžky a části: Má týlní otvor (foramen magnum) pro míchu, zevní týlní hrbol a dvě kloubní plošky – kondyly, které se spojují s atlasem.
+||Funkce a spojení: Umožňuje pohyb hlavy a propojení lebky s páteří.
+||Zvláštnosti: Muži mívají výraznější zevní týlní hrbol.
+||Dutiny: Tvoří zadní stěnu mozkovny – velkou dutinu, v níž je uložen mozek. Nepodílí se na nosních ani ústních dutinách, ale je součástí lební baze.">
+
+    Týlní kost
+  </li>
+
+  <li data-model="dolniskor" data-name="Dolní skořepa nosní" data-text="Počet: 2||Část: obličejová||
+||Umístění a tvar: Leží v dolní části nosní dutiny, podél její boční stěny.
+||Struktura a tvrdost: Jemná a tenká, z houbovité kostní tkáně.
+||Funkce: Zvětšuje povrch nosní dutiny, čímž umožňuje ohřev, zvlhčení a čištění vzduchu.
+||Zvláštnosti: Svým zakřivením vytváří víření vzduchu a napomáhá proudění ke čichové oblasti.
+||Dutiny: Leží v nosní dutině a podílí se na jejím vnitřním tvaru. Ovlivňuje proudění vzduchu v nosní dutině a přispívá k propojení s vedlejšími dutinami nosními. Nepřímo souvisí i s ústní dutinou, od které ji odděluje patro.">
+    Dolní skořepa nosní
+  </li>
+
+  <li data-model="spank" data-name="Spánková kost" data-text="Počet: 2||Část: obličejová||
+||Umístění a tvar: Nachází se po stranách lebky, pod temenní kostí.
+||Struktura a tvrdost: Složená z více částí – šupiny (NEJTENČÍ ČÁST LEBKY), skalní části (pars petrosa) a bubínkové části.
+||Výběžky a části: Bodcovitý a bradavkový výběžek slouží pro úpony svalů a vazů. Skalní část ukrývá sluchové a rovnovážné ústrojí, zevní zvukovod vede k bubínku. Jařmový oblouk tvoří spojnici lícní a spánkové kosti a přenáší žvýkací síly z čelisti do lebky.
+||Funkce a spojení: Tvoří kloub s dolní čelistí a část jařmového oblouku.
+||Zvláštnosti: Patří k nejsložitějším kostem lebky.
+||Dutiny: Patří ke středoušní dutině (v níž se nacházejí sluchové kůstky) a obsahuje vzdušné buňky v bradavkovém výběžku. Součástí spánkové kosti je také část mozkovny (lební dutiny) a boční stěna očnice.">
+    Spánková kost
+  </li>
+
+  <li data-model="nosni" data-name="Nosní kost" data-text="Počet: 2||Část: obličejová||
+||Umístění a tvar: Malé kosti tvořící hřbet nosu.
+||Struktura a tvrdost: Tenčí, ale poměrně pevná, tvořená kompaktní tkání.
+||Funkce a spojení: Spojují se s čelní a horní čelistí, vytvářejí horní část nosní přepážky.
+||Zvláštnosti: Při zlomení často dochází k porušení sousedních struktur čichové kosti.
+||Dutiny: Tvoří horní část nosní dutiny a podílí se na propojení s vedlejšími dutinami nosními. Spolu s čelní a čichovou kostí uzavírá horní část nosní přepážky.">
+    Nosní kost
+  </li>
+
+  <li data-model="slzni" data-name="Slzní kost" data-text="Počet: 2||Část: obličejová||
+||Umístění a tvar: Malá kost ve vnitřním koutku očnice.
+||Struktura a tvrdost: Jemná a křehká.
+||Výběžky a části: Obsahuje slzní jamku, ve které začíná slzní kanálek ústící do nosní dutiny.
+||Funkce a spojení: Umožňuje odvod slz do nosu, tvoří část vnitřní stěny očnice.
+||Zvláštnosti: Je nejmenší kostí obličejové části lebky.
+||Dutiny: Tvoří vnitřní stěnu očnice a obsahuje slzní kanálek, který spojuje očnici s nosní dutinou. Nepřímo se tedy podílí i na systému vedlejších dutin nosních.">
+    Slzní kost
+  </li>
+
+  <li data-model="radlic" data-name="Radličná kost" data-text="Počet: 1||Část: obličejová||
+||Umístění a tvar: Nachází se ve střední části nosní dutiny.
+||Struktura a tvrdost: Tenká, trojúhelníkovitá kost.
+||Funkce a spojení: Tvoří dolní a zadní část nosní přepážky, spojuje se s patrovou, klínovou a čichovou kostí.
+||Zvláštnosti: Stabilizuje nosní přepážku a dělí nosní dutinu na dvě poloviny.
+||Dutiny: Je součástí nosní dutiny, kde tvoří její přepážku. Odděluje pravou a levou polovinu nosní dutiny a zpevňuje spojení s vedlejšími dutinami nosními. Nepřímo souvisí s ústní dutinou přes patrovou kost.">
+    Radličná kost
+  </li>
+
+  <li data-model="temen" data-name="Temenní kost" data-text="Počet: 2||Část: mozková||
+||Umístění a tvar: Leží na vrcholu lebky a tvoří její strop.
+||Struktura a tvrdost: Silná, plochá kost z kompaktní tkáně.
+||Funkce a spojení: Spojuje se s čelní, týlní a spánkovou kostí pomocí švů (korunní, lambdový, šupinový).
+||Zvláštnosti: Podle osifikace švů lze určit přibližné stáří jedince.
+||Dutiny: Tvoří horní část mozkovny – lební dutiny, která chrání mozek.">
+    Temenní kost
+  </li>
+</ul>
+
+    </nav>
+  </header>
+
+  <!-- Hlavní obsah – klasická poznávačka -->
+  <div id="container">
+    <div id="viewer-container">
+      <div id="container3D"></div>
+    </div>
+    <div id="info">
+      <h2>Lebka – 3D poznávačka</h2>
+      <div id="verify-container" style="margin-top:20px;">
+  <button id="verify-btn" style="display:none;" class="btn-white">OVĚŘIT</button>
+  <div id="verify-form" style="display:none; margin-top:10px;">
+    <!-- výběr počtu -->
+<p><strong>Počet kostí:</strong></p>
+<label><input type="radio" name="bone-count" value="1"> 1</label><br>
+<label><input type="radio" name="bone-count" value="2"> 2</label>
+
+<!-- výběr části lebky -->
+<p><strong>Část lebky:</strong></p>
+<label><input type="radio" name="bone-part" value="mozková"> Mozková</label><br>
+<label><input type="radio" name="bone-part" value="obličejová"> Obličejová</label>
+<hr>
+
+    <p>Tvrzení:</p>
+    <div id="verify-claims"></div>
+
+    <button id="verify-submit" class="btn-white">SUBMIT</button>
+    <p id="verify-result" style="margin-top:10px;"></p>
+  </div>
+</div>
+
+      <p id="bone-text">Vyber kost ze seznamu a zobrazí se detailní pohled.</p>
+    </div>
+  </div>
+
+  <!-- Testovací mód -->
+<div id="test-container" style="display:none; flex-direction: row; height: 100vh;">
+  <!-- Levý sloupec pro 3D model v testu -->
+  <div id="test-3d" style="flex:1; display:flex; justify-content:center; align-items:center; background: linear-gradient(to bottom, #222, #000);">
+    <!-- renderer se sem dynamicky připojí -->
+  </div>
+
+  <!-- Pravý sloupec pro seznam kostí a ovládací prvky -->
+  <div style="flex:1; background: linear-gradient(to bottom, #222, #000); color:white; padding:20px; overflow-y:auto;">
+    <ul id="test-bones-list" style="list-style:none; padding:0; margin:0;"></ul>
+    <button id="submit-btn" style="margin-top:10px;" class="btn-white">SUBMIT</button>
+    <p id="result" style="margin-top:10px;"></p>
+    <button id="next-btn" style="display:none; margin-top:10px;" class="btn-white">Další</button>
+  </div>
+</div>
+
+
+  <script type="module" src="script.js"></script>
 </body>
 </html>
