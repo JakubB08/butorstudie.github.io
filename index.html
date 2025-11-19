@@ -1,74 +1,287 @@
-<!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Páteř a hrudník – 3D poznávačka</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Butorstudie</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        body.intro-active {
+    overflow: hidden;
+}
+
+        /* Úvodní animace */
+        #intro {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+            font-size: 3rem;
+            font-weight: bold;
+            opacity: 1;
+            animation: fadeOutSmooth 2s linear forwards;
+            animation-delay: 4s;
+        }
+
+        @keyframes fadeOutSmooth {
+    0%   { opacity: 1; }
+    20%  { opacity: 0.95; }
+    40%  { opacity: 0.9; }
+    60%  { opacity: 0.7; }
+    80%  { opacity: 0.4; }
+    100% { opacity: 0; visibility: hidden; }
+}
+
+        /* Sekce úvodu po animaci */
+        header {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            font-size: 2.5rem;
+        }
+        section h2 {
+    font-size: 2.6rem; /* původně např. 2rem, teď větší */
+    margin-bottom: 40px; /* odsazení od obsahu pod ním */
+    text-align: center;  /* aby nadpis byl uprostřed sekce */
+    color: #fff; /* barva nadpisu */
+}
+
+        /* Sekce biologie */
+        section {
+            padding: 80px 20px;
+            background: #111;
+            text-align: center;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .category-card {
+            width: 250px;
+            background: #222;
+            border-radius: 20px;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 160px;
+            overflow: hidden;
+            object-fit: cover;
+        }
+
+        .category-card:hover {
+            transform: scale(1.2); /* zvětšení o 8 % při hover */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5); /* jemný stín pro hloubku */
+    z-index: 10;
+        }
+
+        .category-card div {
+            padding: 12px;
+            font-size: 1.2rem;
+            background: #333;
+        }
+
+        .category-card {
+    width: 250px;
+    background: #222;
+    border-radius: 20px;
+    overflow: hidden;
+    text-decoration: none;
+    color: white;
+    transition: transform 0.8s ease, opacity 0.8s ease;
+    opacity: 0;
+}
+
+.category-card.left {
+    transform: translateX(-100px);
+}
+
+.category-card.right {
+    transform: translateX(100px);
+}
+
+.category-card.visible {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.category-card.visible:hover {
+    transform: scale(1.08); /* nyní se aplikuje scale jen když je viditelná */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+
+.nav-buttons {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.nav-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    background: #444;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.nav-buttons button:hover {
+    background: #666;
+    transform: scale(1.05);
+}
+
+/* Tablety a menší obrazovky */
+@media (max-width: 768px) {
+    header {
+        font-size: 2rem;
+        padding-top: 30px;
+        text-align: center;
+    }
+
+    section h2 {
+        font-size: 2rem;
+        margin-bottom: 30px;
+    }
+
+    .card-container {
+        flex-direction: column; /* karty pod sebe */
+        gap: 20px;
+        align-items: center;
+    }
+
+    .category-card {
+        width: 80%; /* menší šířka karty */
+    }
+
+    .nav-buttons {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .nav-buttons button {
+        width: 70%;
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+}
+
+/* Mobily */
+@media (max-width: 480px) {
+    header {
+        font-size: 1.5rem;
+        padding-top: 20px;
+    }
+
+    section h2 {
+        font-size: 1.6rem;
+        margin-bottom: 20px;
+    }
+
+    .category-card {
+        width: 90%; /* zabere většinu šířky obrazovky */
+    }
+
+    .nav-buttons button {
+        width: 90%;
+        font-size: 0.85rem;
+        padding: 6px 12px;
+    }
+}
+
+
+
+    </style>
 </head>
 <body>
-  <!-- Horní banner -->
-  <header id="top-banner">
-    <h1>Páteř & hrudník
-      <button id="show-chest-btn" class="btn-white">Hrudník</button>
-      <button id="show-spine-btn" class="btn-white">Páteř</button>
-      <button id="test-mode-btn" class="btn-white" >TEST</button>
-       <button id="exit-test-btn" class="btn-red" style="display:none;">EXIT TEST</button>
-    </h1>
-    <nav id="bones-nav">
-      <ul id="chest-list" style="display:none;">
-        <li data-model="prave" data-name="Pravá žebra" data-mode="single">Pravá žebra</li>
-        <li data-model="neprave" data-name="Nepravá žebra" data-mode="single">Nepravá žebra</li>
-        <li data-model="volne" data-name="Volná žebra" data-mode="single">Volná žebra</li>
-        <li data-model="hrudni_kost" data-name="Hrudní kost" data-mode="single">Hrudní kost</li>
-      </ul>
-      <ul id="spine-list" style="display:none;">
-        <li data-name="Krční obratel">
-          Krční obratel
-          <ul class="sublist">
-            <li data-model="c1" data-name="C1" data-mode="dual">C1</li>
-            <li data-model="c2" data-name="C2" data-mode="dual">C2</li>
-          </ul>
-        </li>
-        <li data-model="krcni" data-name="Krční obratel (C3-C7)" data-mode="dual" data-text = "jfsoijfoishgoiggsggsosfjg">Krční obratel</li>
-        <li data-model="hrudni" data-name="Hrudní obratel" data-mode="dual">Hrudní obratel</li>
-        <li data-model="bederni" data-name="Bederní obratel" data-mode="dual">Bederní obratel</li>
-        <li data-model="krizova" data-name="Křížová kost" data-mode="dual">Křížová kost</li>
-        <li data-model="kostrc" data-name="Kostrč" data-mode="dual">Kostrč</li>
-      </ul>
-    </nav>
-  </header>
+    <div id="intro">Butorstudie</div>
 
-  <!-- Hlavní obsah – klasická poznávačka -->
-  <div id="container">
-    <div id="viewer-container">
-      <div id="container3D"></div>
+    <header>
+    <div>
+        <h1>Vítejte</h1>
+        <br><br><br>
+        <p>Vyberte obor:</p>
+        <div class="nav-buttons">
+            <button data-target="#biologie">Biologie</button>
+        </div>
     </div>
-    <div id="info">
-      <h2>Vyber část těla</h2>
-      <div id="mode-switch" style="margin-top:10px; display:none;">
-        <button id="btn-detail" class="btn-white">Detail</button>
-        <button id="btn-position" class="btn-white">Pozice</button>
-      </div>
-      <p id="bone-text">Vyber podsoučástku pro zobrazení modelu.</p>
-      
-    </div>
-  </div>
-<div id="test-container" style="display:none; flex-direction:row; height:100vh;">
- 
+</header>
 
-  <div id="test-3d" style="flex:1; display:flex; justify-content:center; align-items:center; background: linear-gradient(to bottom, #222, #000);">
-    <!-- renderer se sem připojí -->
-  </div>
-  <div style="flex:1; background: linear-gradient(to bottom, #222, #000); color:white; padding:20px; overflow-y:auto;">
-    <ul id="test-bones-list" style="list-style:none; padding:0; margin:0;"></ul>
-    <button id="submit-btn" style="margin-top:10px;" class="btn-white">SUBMIT</button>
-    <p id="result" style="margin-top:10px;"></p>
-    <button id="next-btn" style="display:none; margin-top:10px;" class="btn-white">Další</button>
-    <p id="progress-counter" style="margin-top:10px; font-weight:bold;"></p>
-  </div>
-</div>
 
-  <script type="module" src="script.js"></script>
+    <section id="biologie">
+        <h2>Biologie</h2>
+        <div class="card-container">
+            <a href="http://butorstudie.endora.site/" class="category-card left">
+                <img src="lebka.png" alt="Kategorie 1">
+                <div>Lebka</div>
+            </a>
+            <a href="#" class="category-card right">
+                <img src="pater_hrudnik.png" alt="Kategorie 2">
+                <div>Kategorie 2</div>
+            </a>
+            <a href="#" class="category-card left">
+                <img src="kostra.png" alt="Kategorie 3">
+                <div>Kategorie 3</div>
+            </a>
+        </div>
+    </section>
+
+<script>
+  document.body.classList.add('intro-active'); // blok scrollu
+
+const intro = document.getElementById('intro');
+intro.addEventListener('animationend', () => {
+    document.body.classList.remove('intro-active'); // povolení scrollu
+});
+
+  
+  const section = document.querySelector('section'); // sekce Biologie
+const cards = document.querySelectorAll('.category-card');
+
+window.addEventListener('scroll', () => {
+    const rect = section.getBoundingClientRect();
+    const trigger = window.innerHeight * 0.7; // kdy se má aktivovat efekt
+
+    if(rect.top < trigger && rect.bottom > 0){
+        cards.forEach(card => card.classList.add('visible'));
+    } else {
+        cards.forEach(card => card.classList.remove('visible'));
+    }
+});
+
+const navButtons = document.querySelectorAll('.nav-buttons button');
+
+navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const target = document.querySelector(button.dataset.target);
+        target.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+
+
+</script>
+
 </body>
 </html>
